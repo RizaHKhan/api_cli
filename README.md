@@ -6,6 +6,12 @@
 npm run dev
 ```
 
+Navigate to directory and run
+
+```
+sudo npm link
+```
+
 ## Stack
 
 1. Node
