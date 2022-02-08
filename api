@@ -1,0 +1,12 @@
+#!/usr/bin/env node
+
+const [default1, default2, method, one, two, three, four] = process.argv;
+
+if (!method) {
+    console.log("Please specify a method");
+    return;
+}
+
+const { api } = require("./dist/index.js");
+
+api[method](one, two, three, four);
