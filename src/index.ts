@@ -102,6 +102,40 @@ class API {
             this.connection.end();
         }
     };
+
+    authEndpoints = async (...args: string[]): Promise<boolean | string> => {
+        const [name, endpoint] = args;
+        // const payload = {};
+        // data.split(",").forEach((item) => {
+        //     const [key, value] = item.split(":");
+        //     payload[key] = value;
+        // });
+
+        try {
+            this.connection.connect();
+
+            const results = await this.connection.query(
+                "SELECT url, token FROM apps WHERE name = $1;",
+                [name]
+            );
+
+            const url = results.rows[0]["url"];
+            const token = results.rows[0]["token"];
+
+            const res = await axios.get(`${url}${endpoint}`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            console.log(res.data);
+        } catch (e) {
+            console.log(e);
+        } finally {
+            this.connection.end();
+        }
+    };
 }
 
 export const api = new API(client);
